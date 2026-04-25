@@ -8,7 +8,7 @@ import { useState } from "react";
 import { MultiSelect } from "./MultiSelect";
 
 const TODAY = "2026-04-18";
-const PRIMARY = "#5C4EE5";
+const PRIMARY = "#FF7859";
 
 // ── Mock data ─────────────────────────────────────────────────────────────
 const MY_STUDIES = [

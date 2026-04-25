@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import {
   Users, AlertTriangle, Clock, FileText, CheckCircle, Search, Plus, Upload,
 } from "lucide-react";
+import { NewUserWizard } from "./NewUserWizard";
 
 const PRIMARY    = "#5C4EE5";
 const PAGE_BG    = "#F2EDE6";
@@ -80,22 +82,48 @@ function TrainingBadge({ status, date }: { status: TrainingStatus; date: string 
 }
 
 export function UsersPage() {
+  const navigate                        = useNavigate();
+  const [staff, setStaff]             = useState(STAFF);
   const [staffSearch, setStaffSearch] = useState("");
   const [hoveredRow, setHoveredRow]   = useState<number | null>(null);
+  const [showWizard, setShowWizard]   = useState(false);
 
-  const filtered = STAFF.filter(s =>
+  const filtered = staff.filter(s =>
     staffSearch === "" ||
     s.name.toLowerCase().includes(staffSearch.toLowerCase()) ||
     s.role.toLowerCase().includes(staffSearch.toLowerCase()) ||
     s.department.toLowerCase().includes(staffSearch.toLowerCase()),
   );
 
-  const expired  = STAFF.filter(s => s.gcpStatus === "Expired").length;
-  const expiring = STAFF.filter(s => s.gcpStatus === "Expiring").length;
-  const noCV     = STAFF.filter(s => !s.cvOnFile).length;
+  const expired  = staff.filter(s => s.gcpStatus === "Expired").length;
+  const expiring = staff.filter(s => s.gcpStatus === "Expiring").length;
+  const noCV     = staff.filter(s => !s.cvOnFile).length;
+
+  function handleCreateUser(name: string, role: string) {
+    const initials = name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
+    const colors   = ["#5C4EE5", "#0D7A5F", "#B45309", "#7E22CE", "#9B2335", "#1D4ED8"];
+    const newMember: StaffMember = {
+      id: staff.length + 1,
+      name,
+      initials,
+      avatarColor: colors[staff.length % colors.length],
+      role: (role as RoleBadge) || "Coordinator",
+      department: "Clinical Ops",
+      gcpDate: "—",
+      gcpStatus: "Current",
+      licenseState: "N/A",
+      licenseExpiry: "N/A",
+      cvOnFile: false,
+      lastActive: "Never",
+    };
+    setStaff(prev => [...prev, newMember]);
+  }
 
   return (
     <div className="flex flex-col min-h-full -m-6">
+      {showWizard && (
+        <NewUserWizard onClose={() => setShowWizard(false)} onCreate={handleCreateUser} />
+      )}
       {/* Header */}
       <div className="sticky top-0 z-20 px-6 py-4" style={{ background: CARD_BG, borderBottom: `1px solid ${BORDER}` }}>
         <h1 className="text-base font-semibold" style={{ color: TEXT_DARK }}>Users</h1>
@@ -124,7 +152,11 @@ export function UsersPage() {
                   style={{ color: TEXT_DARK }}
                 />
               </div>
-              <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-white" style={{ background: PRIMARY }}>
+              <button
+                onClick={() => setShowWizard(true)}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-white"
+                style={{ background: PRIMARY }}
+              >
                 <Plus size={13} />
                 Add Staff
               </button>
@@ -149,6 +181,7 @@ export function UsersPage() {
                     style={{ borderBottom: `1px solid ${BORDER}`, background: hoveredRow === s.id ? PAGE_BG : "transparent" }}
                     onMouseEnter={() => setHoveredRow(s.id)}
                     onMouseLeave={() => setHoveredRow(null)}
+                    onClick={() => navigate(`/users/${s.id}`)}
                   >
                     <td className="py-3 pr-4">
                       <div className="flex items-center gap-2">
@@ -172,11 +205,10 @@ export function UsersPage() {
                         : <button className="flex items-center gap-1 text-xs font-medium" style={{ color: PRIMARY }}><Upload size={12} />Upload</button>}
                     </td>
                     <td className="py-3 pr-4"><span className="text-xs" style={{ color: TEXT_MUTED }}>{s.lastActive}</span></td>
-                    <td className="py-3 w-0">
+                    <td className="py-3 w-0" onClick={e => e.stopPropagation()}>
                       {hoveredRow === s.id && (
                         <div className="flex items-center gap-2 pr-1">
-                          <button className="text-xs font-medium px-2 py-1 rounded-md" style={{ color: PRIMARY, background: "#EDE9FF" }}>Edit</button>
-                          <button className="text-xs font-medium px-2 py-1 rounded-md" style={{ color: TEXT_MID, background: BORDER }}>View Credentials</button>
+                          <button onClick={() => navigate(`/users/${s.id}`)} className="text-xs font-medium px-2 py-1 rounded-md" style={{ color: PRIMARY, background: "#EDE9FF" }}>View Profile</button>
                           <button className="text-xs font-medium px-2 py-1 rounded-md" style={{ color: "#DC2626", background: "#FEF2F2" }}>Remove</button>
                         </div>
                       )}

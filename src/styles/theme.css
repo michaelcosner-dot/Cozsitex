@@ -4,12 +4,12 @@
   --font-size: 15px;
   --background: #F2EDE6;
   --foreground: #1A1511;
-  --card: #FFFFFF;
+  --card: #FFFAF0;
   --card-foreground: #1A1511;
   --popover: #FFFFFF;
   --popover-foreground: #1A1511;
-  --primary: #5C4EE5;
-  --primary-foreground: #ffffff;
+  --primary: #FF7859;
+  --primary-foreground: #211236;
   --secondary: #F0EAE2;
   --secondary-foreground: #3D3028;
   --muted: #EDE5DC;
@@ -33,7 +33,7 @@
   --radius: 0.75rem;
   --sidebar: #FFFCF7;
   --sidebar-foreground: #1A1511;
-  --sidebar-primary: #5C4EE5;
+  --sidebar-primary: #FF7859;
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #F5EFE7;
   --sidebar-accent-foreground: #3D3028;
@@ -203,5 +203,11 @@
   /* Tighter, warmer letter-spacing on headings */
   h1, h2, h3 {
     letter-spacing: -0.015em;
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-weight: 400;
   }
+}
+
+@utility font-display {
+  font-family: 'DM Serif Display', Georgia, serif;
 }

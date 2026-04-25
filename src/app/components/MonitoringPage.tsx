@@ -274,43 +274,20 @@ function ActionBtn({ icon: Icon, label, onClick }: { icon: React.ElementType; la
   );
 }
 
-// ── AG Grid constants ──────────────────────────────────────────────────────────
-const AG_BORDER    = "#BDC3CC";
-const AG_CELL_DIV  = "#E0E3E8";
-const AG_H_TEXT    = "#181D1F";
-
 // ── Table header ───────────────────────────────────────────────────────────
 function Th({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <th
-      className={`text-left whitespace-nowrap ${className}`}
-      style={{
-        borderRight: `1px solid ${AG_BORDER}`,
-        padding: "0 12px",
-        fontSize: 11,
-        fontWeight: 600,
-        color: AG_H_TEXT,
-        textTransform: "uppercase" as const,
-        letterSpacing: "0.04em",
-        height: 40,
-      }}
-    >
-      <span style={{ color: AG_BORDER, marginRight: 4, fontSize: 10 }}>⋮⋮</span>
-      {children}
+    <th className={`px-4 py-3 text-left whitespace-nowrap ${className}`}>
+      <span className="text-[11px] font-semibold uppercase tracking-wide" style={{ color: "#9CA3AF" }}>
+        {children}
+      </span>
     </th>
   );
 }
 
 function Td({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <td
-      className={`align-middle ${className}`}
-      style={{
-        borderRight: `1px solid ${AG_CELL_DIV}`,
-        padding: "0 12px",
-        fontSize: 13,
-      }}
-    >
+    <td className={`px-4 py-3 align-middle text-sm ${className}`}>
       {children}
     </td>
   );
@@ -519,11 +496,11 @@ export function MonitoringPage() {
 
         {/* ── Upcoming Visits table ── */}
         {activeTab === "upcoming" && (
-          <div className="overflow-x-auto flex-1" style={{ border: "1px solid #BDC3CC", borderRadius: 4, overflow: "hidden" }}>
+          <div className="overflow-x-auto flex-1">
             <table className="w-full text-sm" style={{ borderCollapse: "collapse" }}>
               <thead style={{ position: "sticky", top: 0, zIndex: 1 }}>
-                <tr style={{ background: "#F8F9FA", borderBottom: `1px solid ${AG_BORDER}`, height: 40 }}>
-                  <th style={{ width: 42, borderRight: `1px solid ${AG_BORDER}`, textAlign: "center", padding: 0 }}>
+                <tr style={{ background: "#FFFCF7", borderBottom: "2px solid #EDE5DA" }}>
+                  <th className="px-4 py-3 text-center" style={{ width: 42 }}>
                     <input type="checkbox" checked={allUpcomingSelected} onChange={() => {
                       if (allUpcomingSelected) { setSelectedUpcoming(new Set()); setAllUpcomingSelected(false); }
                       else { setSelectedUpcoming(new Set(filteredUpcoming.map(v => v.id))); setAllUpcomingSelected(true); }
@@ -538,35 +515,22 @@ export function MonitoringPage() {
                   <Th>Last Visit</Th>
                   <Th>Actions</Th>
                 </tr>
-                {/* Filter row */}
-                <tr style={{ background: "#F8F9FA", borderBottom: `2px solid ${AG_BORDER}` }}>
-                  <th style={{ width: 42, borderRight: `1px solid ${AG_BORDER}` }} />
-                  {["Study", "Monitor", "", "", "", "", "", ""].map((h, i) => (
-                    <th key={i} style={{ borderRight: `1px solid ${AG_BORDER}`, padding: "2px 4px" }}>
-                      {h ? (
-                        <div style={{ position: "relative" }}>
-                          <input placeholder="Filter..." style={{ height: 22, fontSize: 11, border: `1px solid ${AG_BORDER}`, borderRadius: 2, paddingRight: 20, paddingLeft: 4, width: "100%", background: "white" }} readOnly />
-                          <span style={{ position: "absolute", right: 4, top: "50%", transform: "translateY(-50%)", color: "#9CA3AF", fontSize: 10, pointerEvents: "none" }}>≡</span>
-                        </div>
-                      ) : null}
-                    </th>
-                  ))}
-                </tr>
               </thead>
               <tbody>
                 {filteredUpcoming.map(v => {
                   const isUrgent = v.daysUntil <= 7 && v.prepStatus !== "Ready";
                   const isSelected = selectedUpcoming.has(v.id);
                   const isHovered = hoveredUpcoming === v.id;
-                  const rowBg = isSelected ? "#EBF3FF" : isHovered ? "#F0F4FF" : isUrgent ? "#FFF8F8" : "#FFFFFF";
+                  const rowBg = isSelected ? "#F5EDDE" : isHovered ? "#FAF6F0" : isUrgent ? "#FFF8F8" : "#FFFCF7";
                   return (
                     <tr
                       key={v.id}
-                      style={{ borderBottom: `1px solid ${AG_CELL_DIV}`, height: 40, background: rowBg }}
+                      className="transition-colors"
+                      style={{ borderBottom: "1px solid #EDE5DA", background: rowBg }}
                       onMouseEnter={() => setHoveredUpcoming(v.id)}
                       onMouseLeave={() => setHoveredUpcoming(null)}
                     >
-                      <td style={{ width: 42, borderRight: `1px solid ${AG_CELL_DIV}`, textAlign: "center" }} onClick={() => {
+                      <td className="px-4 py-3 text-center align-middle" style={{ width: 42 }} onClick={() => {
                         setSelectedUpcoming(prev => { const next = new Set(prev); next.has(v.id) ? next.delete(v.id) : next.add(v.id); return next; });
                       }}>
                         <input type="checkbox" checked={isSelected} onChange={() => {}} style={{ cursor: "pointer" }} />
@@ -622,7 +586,7 @@ export function MonitoringPage() {
               </tbody>
             </table>
             {/* Status bar */}
-            <div style={{ background: "#F8F9FA", borderTop: `1px solid ${AG_BORDER}`, padding: "4px 12px", display: "flex", alignItems: "center", gap: 16, fontSize: 11, color: "#6D7786" }}>
+            <div style={{ background: "#FAF7F3", borderTop: "1px solid #EDE5DA", padding: "4px 16px", display: "flex", alignItems: "center", gap: 16, fontSize: 11, color: "#9CA3AF" }}>
               <span>Total Rows: {filteredUpcoming.length}</span>
               <span>|</span>
               <span>Selected: {selectedUpcoming.size}</span>
@@ -634,8 +598,8 @@ export function MonitoringPage() {
         {activeTab === "recent" && (
           <div className="overflow-x-auto flex-1">
             <table className="w-full text-sm">
-              <thead style={{ position: "sticky", top: 0, zIndex: 1, background: "#FAF7F2" }}>
-                <tr style={{ borderBottom: `1px solid ${BORDER}` }}>
+              <thead style={{ position: "sticky", top: 0, zIndex: 1, background: "#FFFCF7" }}>
+                <tr style={{ borderBottom: "2px solid #EDE5DA" }}>
                   <Th>Study</Th>
                   <Th>Monitor</Th>
                   <Th>Visit Date</Th>
@@ -653,8 +617,10 @@ export function MonitoringPage() {
                   return (
                     <tr
                       key={v.id}
-                      className="border-b transition-colors hover:bg-amber-50/30 group/row"
-                      style={{ borderColor: BORDER }}
+                      className="border-b transition-colors group/row"
+                      style={{ borderColor: "#EDE5DA", background: "#FFFCF7" }}
+                      onMouseEnter={e => (e.currentTarget.style.background = "#FAF6F0")}
+                      onMouseLeave={e => (e.currentTarget.style.background = "#FFFCF7")}
                     >
                       <Td>
                         <div className="font-semibold text-xs" style={{ color: TEXT_DARK }}>

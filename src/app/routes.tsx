@@ -16,6 +16,7 @@ import { FeasibilityPage } from "./components/FeasibilityPage";
 import { ConsentPage } from "./components/ConsentPage";
 import { SiteManagementPage } from "./components/SiteManagementPage";
 import { UsersPage } from "./components/UsersPage";
+import { PersonProfilePage } from "./components/PersonProfilePage";
 
 export const router = createBrowserRouter([
   {
@@ -37,6 +38,7 @@ export const router = createBrowserRouter([
       { path: "profile", Component: ProfilePage },
       { path: "site-management", Component: SiteManagementPage },
       { path: "users", Component: UsersPage },
+      { path: "users/:userId", Component: PersonProfilePage },
       { path: "study/:studyId", Component: StudyWorkspace },
       { path: "study/create", Component: StudyCreationWizard },
     ],

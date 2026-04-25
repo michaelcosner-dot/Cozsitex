@@ -198,7 +198,7 @@ export function SiteDirectorHomepage() {
           <button
             onClick={() => { setShowBenchmarks(v => !v); setShowReports(false); }}
             className="text-sm font-medium border border-gray-200 rounded-xl px-4 py-2 hover:bg-gray-50 text-gray-700"
-            style={showBenchmarks ? { borderColor: "#5C4EE5", color: "#5C4EE5" } : {}}
+            style={showBenchmarks ? { borderColor: "#FF7859", color: "#FF7859" } : {}}
           >
             🏆 Site Benchmarks
           </button>
@@ -222,7 +222,7 @@ export function SiteDirectorHomepage() {
               const st = PIPELINE_STYLE[p];
               return (
                 <div key={p} className="flex-1 px-2 first:pl-0 last:pr-0 text-center">
-                  <div className="text-2xl font-bold" style={{ color: st.color }}>{pipelineCounts[p]}</div>
+                  <div className="text-2xl font-bold font-display" style={{ color: st.color }}>{pipelineCounts[p]}</div>
                   <div className="text-[9px] font-semibold mt-0.5 leading-tight" style={{ color: st.color }}>{p}</div>
                 </div>
               );
@@ -233,7 +233,7 @@ export function SiteDirectorHomepage() {
         {/* Avg Startup */}
         <div className="bg-white border border-gray-200 rounded-xl px-4 py-3">
           <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-2">Avg Startup</div>
-          <div className="text-2xl font-bold text-gray-900">{avgStartup}d</div>
+          <div className="text-2xl font-bold text-gray-900 font-display">{avgStartup}d</div>
           <div className="text-xs mt-1" style={{ color: avgStartup < BENCHMARKS.startup.network ? "#059669" : "#D97706" }}>
             {avgStartup < BENCHMARKS.startup.network
               ? `${BENCHMARKS.startup.network - avgStartup}d faster than network`
@@ -244,7 +244,7 @@ export function SiteDirectorHomepage() {
         {/* Avg Signing */}
         <div className="bg-white border border-gray-200 rounded-xl px-4 py-3">
           <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-2">Avg Signing</div>
-          <div className="text-2xl font-bold text-gray-900">{avgSigning}h</div>
+          <div className="text-2xl font-bold text-gray-900 font-display">{avgSigning}h</div>
           <div className="text-xs mt-1 text-green-600">
             {Math.round(((BENCHMARKS.signing.network - avgSigning) / BENCHMARKS.signing.network) * 100)}% faster than network
           </div>
@@ -253,7 +253,7 @@ export function SiteDirectorHomepage() {
         {/* Critical Risks */}
         <div className="bg-white border border-gray-200 rounded-xl px-4 py-3">
           <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-2">Critical Risks</div>
-          <div className="text-2xl font-bold" style={{ color: criticalRisks > 0 ? "#DC2626" : "#059669" }}>{criticalRisks}</div>
+          <div className="text-2xl font-bold font-display" style={{ color: criticalRisks > 0 ? "#DC2626" : "#059669" }}>{criticalRisks}</div>
           <div className="text-xs mt-1" style={{ color: criticalRisks > 0 ? "#DC2626" : "#059669" }}>
             {criticalRisks > 0 ? "Require immediate action" : "No critical risks"}
           </div>
@@ -262,7 +262,7 @@ export function SiteDirectorHomepage() {
         {/* Expired Docs */}
         <div className="bg-white border border-gray-200 rounded-xl px-4 py-3">
           <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-2">Expired Docs</div>
-          <div className="text-2xl font-bold" style={{ color: totalExpiredDocs > 0 ? "#D97706" : "#059669" }}>{totalExpiredDocs}</div>
+          <div className="text-2xl font-bold font-display" style={{ color: totalExpiredDocs > 0 ? "#D97706" : "#059669" }}>{totalExpiredDocs}</div>
           <div className="text-xs mt-1" style={{ color: totalExpiredDocs > 0 ? "#D97706" : "#059669" }}>
             {totalExpiredDocs > 0 ? "Across 3 studies" : "All documents current"}
           </div>
@@ -271,7 +271,7 @@ export function SiteDirectorHomepage() {
         {/* Audit Score */}
         <div className="bg-white border border-gray-200 rounded-xl px-4 py-3">
           <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-2">Audit Score</div>
-          <div className="text-2xl font-bold" style={auditColor(avgAudit)}>{avgAudit}<span className="text-sm font-normal text-gray-400">/100</span></div>
+          <div className="text-2xl font-bold font-display" style={auditColor(avgAudit)}>{avgAudit}<span className="text-sm font-normal text-gray-400">/100</span></div>
           <div className="text-xs mt-1 text-green-600">
             {avgAudit - BENCHMARKS.audit.network}pts above network avg
           </div>
@@ -301,7 +301,7 @@ export function SiteDirectorHomepage() {
                     {[
                       { who: "Your site", val: b.site, color: siteGood ? "#059669" : "#D97706" },
                       { who: "Network avg", val: b.network, color: "#9CA3AF" },
-                      { who: "Top sites", val: b.top, color: "#5C4EE5" },
+                      { who: "Top sites", val: b.top, color: "#FF7859" },
                     ].map(row => (
                       <div key={row.who}>
                         <div className="flex justify-between text-xs mb-1">
@@ -634,7 +634,7 @@ export function SiteDirectorHomepage() {
           <button
             onClick={() => setShowAnnModal(true)}
             className="text-xs font-semibold text-white px-3 py-1.5 rounded-lg"
-            style={{ background: "#5C4EE5" }}
+            style={{ background: "#FF7859" }}
           >
             + New Announcement
           </button>
@@ -681,7 +681,7 @@ export function SiteDirectorHomepage() {
                         <span className="text-[10px] font-semibold text-gray-700">{a.acked}</span>
                         <span className="text-[9px] text-gray-400">{ackPct}%</span>
                       </div>
-                      <MiniBar pct={ackPct} color="#5C4EE5" />
+                      <MiniBar pct={ackPct} color="#FF7859" />
                     </>
                   ) : <span className="text-[10px] text-gray-300">N/A</span>}
                 </div>
@@ -760,7 +760,7 @@ export function SiteDirectorHomepage() {
               <button
                 onClick={() => setShowAnnModal(false)}
                 className="px-4 py-2 text-sm font-semibold text-white rounded-lg"
-                style={{ background: "#5C4EE5" }}
+                style={{ background: "#FF7859" }}
               >
                 Send Announcement
               </button>

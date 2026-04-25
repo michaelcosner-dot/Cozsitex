@@ -186,7 +186,7 @@ function StatCard({ label, value, sub, subColor }: { label: string; value: React
   return (
     <div className="bg-white border border-gray-200 rounded-xl px-5 py-4">
       <div className="text-[10px] font-semibold text-gray-400 tracking-widest uppercase mb-2">{label}</div>
-      <div className="text-3xl font-bold text-gray-900 leading-none mb-1.5">{value}</div>
+      <div className="text-3xl font-bold text-gray-900 leading-none mb-1.5 font-display">{value}</div>
       <div className="text-xs" style={{ color: subColor || "#9CA3AF" }}>{sub}</div>
     </div>
   );

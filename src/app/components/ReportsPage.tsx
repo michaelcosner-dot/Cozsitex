@@ -449,35 +449,20 @@ export function ReportsPage() {
               </button>
             </div>
 
-            {/* AG Grid Table */}
-            <div className="overflow-x-auto" style={{ border: "1px solid #BDC3CC", borderRadius: 4, overflow: "hidden" }}>
-              <table className="w-full" style={{ borderCollapse: "collapse" }}>
-                <thead>
-                  {/* Header row */}
-                  <tr style={{ background: "#F8F9FA", borderBottom: "1px solid #BDC3CC", height: 40 }}>
-                    <th style={{ width: 42, borderRight: "1px solid #BDC3CC", textAlign: "center", padding: 0 }}>
+            {/* Table */}
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm" style={{ borderCollapse: "collapse" }}>
+                <thead style={{ position: "sticky", top: 0, zIndex: 1 }}>
+                  <tr style={{ background: "#FFFCF7", borderBottom: "2px solid #EDE5DA" }}>
+                    <th className="px-4 py-3 text-center" style={{ width: 42 }}>
                       <input type="checkbox" checked={allSelected} onChange={() => {
                         if (allSelected) { setSelectedRows(new Set()); setAllSelected(false); }
                         else { setSelectedRows(new Set(filteredDocs.map(d => String(d.id)))); setAllSelected(true); }
                       }} style={{ cursor: "pointer" }} />
                     </th>
                     {["Study", "Document Name", "Type", "Key Contact", "Expiration Date", "Days", "Status", "Actions"].map(h => (
-                      <th key={h} style={{ borderRight: "1px solid #BDC3CC", padding: "0 12px", fontSize: 11, fontWeight: 600, color: "#181D1F", textAlign: "left", textTransform: "uppercase", whiteSpace: "nowrap", letterSpacing: "0.04em" }}>
-                        <span style={{ color: "#BDC3CC", marginRight: 4, fontSize: 10 }}>⋮⋮</span>{h}
-                      </th>
-                    ))}
-                  </tr>
-                  {/* Filter row */}
-                  <tr style={{ background: "#F8F9FA", borderBottom: "2px solid #BDC3CC" }}>
-                    <th style={{ width: 42, borderRight: "1px solid #BDC3CC" }} />
-                    {["Study", "Document Name", "", "", "", "", "", ""].map((h, i) => (
-                      <th key={i} style={{ borderRight: "1px solid #BDC3CC", padding: "2px 4px" }}>
-                        {h ? (
-                          <div style={{ position: "relative" }}>
-                            <input placeholder="Filter..." style={{ height: 22, fontSize: 11, border: "1px solid #BDC3CC", borderRadius: 2, paddingRight: 20, paddingLeft: 4, width: "100%", background: "white" }} readOnly />
-                            <span style={{ position: "absolute", right: 4, top: "50%", transform: "translateY(-50%)", color: "#9CA3AF", fontSize: 10, pointerEvents: "none" }}>≡</span>
-                          </div>
-                        ) : null}
+                      <th key={h} className="px-4 py-3 text-left whitespace-nowrap">
+                        <span className="text-[11px] font-semibold uppercase tracking-wide" style={{ color: "#9CA3AF" }}>{h}</span>
                       </th>
                     ))}
                   </tr>
@@ -487,53 +472,54 @@ export function ReportsPage() {
                     const toastActive = toastIds.includes(doc.id);
                     const isSelected = selectedRows.has(String(doc.id));
                     const isHovered = hoveredRow === doc.id;
-                    const rowBg = isSelected ? "#EBF3FF" : isHovered ? "#F0F4FF" : "#FFFFFF";
+                    const rowBg = isSelected ? "#F5EDDE" : isHovered ? "#FAF6F0" : "#FFFCF7";
                     return (
                       <tr
                         key={doc.id}
-                        style={{ borderBottom: "1px solid #E0E3E8", height: 40, background: rowBg }}
+                        className="transition-colors"
+                        style={{ borderBottom: "1px solid #EDE5DA", background: rowBg }}
                         onMouseEnter={() => setHoveredRow(doc.id)}
                         onMouseLeave={() => setHoveredRow(null)}
                       >
-                        <td style={{ width: 42, borderRight: "1px solid #E0E3E8", textAlign: "center" }} onClick={() => {
+                        <td className="px-4 py-3 text-center align-middle" style={{ width: 42 }} onClick={() => {
                           setSelectedRows(prev => { const next = new Set(prev); next.has(String(doc.id)) ? next.delete(String(doc.id)) : next.add(String(doc.id)); return next; });
                         }}>
                           <input type="checkbox" checked={isSelected} onChange={() => {}} style={{ cursor: "pointer" }} />
                         </td>
                         {/* Study */}
-                        <td style={{ borderRight: "1px solid #E0E3E8", padding: "0 12px", fontSize: 13 }}>
+                        <td className="px-4 py-3 align-middle">
                           <div className="text-xs font-semibold" style={{ color: "#2D1F12" }}>{doc.studyNickname}</div>
                           <div className="font-mono text-[10px] mt-0.5" style={{ color: "#9CA3AF" }}>{doc.studyProtocol}</div>
                         </td>
                         {/* Document Name */}
-                        <td style={{ borderRight: "1px solid #E0E3E8", padding: "0 12px", fontSize: 13 }}>
+                        <td className="px-4 py-3 align-middle">
                           <div className="text-xs" style={{ color: "#3D3028" }}>{doc.documentName}</div>
                         </td>
                         {/* Type */}
-                        <td style={{ borderRight: "1px solid #E0E3E8", padding: "0 12px", fontSize: 13 }}>
+                        <td className="px-4 py-3 align-middle">
                           <TypeBadge type={doc.type} />
                         </td>
                         {/* Key Contact */}
-                        <td style={{ borderRight: "1px solid #E0E3E8", padding: "0 12px", fontSize: 13 }}>
+                        <td className="px-4 py-3 align-middle">
                           <div className="text-xs font-medium" style={{ color: "#3D3028" }}>{doc.contactName}</div>
                           <div className="text-[10px] mt-0.5" style={{ color: "#9CA3AF" }}>{doc.contactRole}</div>
                         </td>
                         {/* Expiration Date */}
-                        <td style={{ borderRight: "1px solid #E0E3E8", padding: "0 12px", fontSize: 13 }}>
+                        <td className="px-4 py-3 align-middle">
                           <div className="text-xs" style={{ color: "#4D3F34" }}>
                             {new Date(doc.expirationDate + "T00:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                           </div>
                         </td>
                         {/* Days */}
-                        <td style={{ borderRight: "1px solid #E0E3E8", padding: "0 12px", fontSize: 13 }}>
+                        <td className="px-4 py-3 align-middle">
                           <DaysExpiredCell days={doc.daysExpired} />
                         </td>
                         {/* Status */}
-                        <td style={{ borderRight: "1px solid #E0E3E8", padding: "0 12px", fontSize: 13 }}>
+                        <td className="px-4 py-3 align-middle">
                           <StatusBadge status={doc.status} />
                         </td>
                         {/* Actions */}
-                        <td style={{ padding: "0 12px", fontSize: 13 }}>
+                        <td className="px-4 py-3 align-middle">
                           <div className="flex items-center gap-2">
                             <button
                               onClick={() => sendReminder(doc.id)}
@@ -565,8 +551,8 @@ export function ReportsPage() {
               </table>
             </div>
 
-            {/* AG Grid Status Bar */}
-            <div style={{ background: "#F8F9FA", borderTop: "1px solid #BDC3CC", padding: "4px 12px", display: "flex", alignItems: "center", gap: 16, fontSize: 11, color: "#6D7786" }}>
+            {/* Status bar */}
+            <div style={{ background: "#FAF7F3", borderTop: "1px solid #EDE5DA", padding: "4px 16px", display: "flex", alignItems: "center", gap: 16, fontSize: 11, color: "#9CA3AF" }}>
               <span>Total Rows: {filteredDocs.length}</span>
               <span>|</span>
               <span>Selected: {selectedRows.size}</span>

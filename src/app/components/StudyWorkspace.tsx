@@ -177,6 +177,52 @@ const RECENT_ACTIVITY = [
   },
 ];
 
+const AUDIT_TRAIL = [
+  {
+    id: "a1",
+    actor: "KN",
+    actorColor: "#7C3AED",
+    action: "signed",
+    object: "Protocol Amendment v3.2",
+    category: "Signature",
+    time: "12m ago",
+  },
+  {
+    id: "a2",
+    actor: "RS",
+    actorColor: "#059669",
+    action: "modified",
+    object: "ICF v5 — Spanish",
+    category: "Document",
+    time: "1h ago",
+  },
+  {
+    id: "a3",
+    actor: "MH",
+    actorColor: "#D97706",
+    action: "exported",
+    object: "21 CFR Part 11 log",
+    category: "Export",
+    time: "3h ago",
+  },
+  {
+    id: "a4",
+    actor: "MB",
+    actorColor: "#4F46E5",
+    action: "granted access",
+    object: "Site 42 monitor view",
+    category: "Access",
+    time: "Yesterday",
+  },
+];
+
+const AUDIT_CATEGORY_STYLE: Record<string, { bg: string; color: string }> = {
+  Signature: { bg: "#EEF2FF", color: "#4338CA" },
+  Document: { bg: "#ECFDF5", color: "#047857" },
+  Export: { bg: "#FEF3EC", color: "#C05621" },
+  Access: { bg: "#F3E8FF", color: "#6B21A8" },
+};
+
 const MILESTONES = [
   { label: "Protocol Approved", date: "Jan 12, 2024", done: true },
   { label: "Site Activation (first)", date: "Feb 1, 2024", done: true },
@@ -604,6 +650,7 @@ export function StudyWorkspace() {
                 { label: "Sponsor study page", icon: "🔗" },
                 { label: "Budget tracker", icon: "💰" },
                 { label: "Protocol PDF", icon: "📄" },
+                { label: "Full audit trail", icon: "🛡️" },
               ].map((link) => (
                 <button
                   key={link.label}
@@ -614,6 +661,46 @@ export function StudyWorkspace() {
                 </button>
               ))}
             </div>
+          </div>
+
+          {/* Audit trail */}
+          <div className="bg-white border border-gray-200 rounded-xl p-4">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-sm font-semibold text-gray-800">Audit trail</span>
+              <span className="text-[10px] text-gray-400">21 CFR Part 11</span>
+            </div>
+            <div className="space-y-2.5">
+              {AUDIT_TRAIL.map((entry) => {
+                const style = AUDIT_CATEGORY_STYLE[entry.category] || { bg: "#F3F4F6", color: "#6B7280" };
+                return (
+                  <button
+                    key={entry.id}
+                    className="w-full flex items-start gap-2 text-left rounded-lg px-2 py-1.5 hover:bg-gray-50"
+                  >
+                    <Avatar initials={entry.actor} color={entry.actorColor} size={22} />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-gray-700 leading-snug">
+                        <span className="font-medium">{entry.actor}</span>{" "}
+                        <span className="text-gray-500">{entry.action}</span>{" "}
+                        <span className="font-medium">{entry.object}</span>
+                      </p>
+                      <div className="flex items-center gap-1.5 mt-1">
+                        <span
+                          className="text-[10px] font-semibold px-1.5 py-0.5 rounded"
+                          style={{ background: style.bg, color: style.color }}
+                        >
+                          {entry.category}
+                        </span>
+                        <span className="text-[10px] text-gray-400">{entry.time}</span>
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+            <button className="mt-3 text-xs text-gray-500 hover:text-gray-900 w-full text-left">
+              View full audit trail →
+            </button>
           </div>
         </div>
       </div>
